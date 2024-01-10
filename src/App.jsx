@@ -8,22 +8,27 @@ function MainComponent() {
 
   const handleGenerateClick = async () => {
     alert(inputPrompt)
-    const response = await fetch("http://localhost:5050/generate_text", {
+    const response = await fetch("http://127.0.0.1:5000/generate_text", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ prompt: inputPrompt }),
+      body: JSON.stringify({ "prompt": inputPrompt }),
     });
 
     const data = await response.json();
-    setGeneratedResponse(data.text);
+    if (data && data.response) {
+      setGeneratedResponse(data.response);
+      console.log(data.response);
+    } else {
+      console.error('Failed to generate text. Data:', data);
+    }
   };
  return (
   <div className="min-h-screen bg-[#0d1117] text-[#c9d1d9] font-roboto">
    <header className="flex justify-between items-center p-4 bg-[#161b22]">
     <img
-     src="images/company-logo.png"
+     src="https://brandlogovector.com/wp-content/uploads/2022/06/Amity-University-Icon-Logo-Small.png"
      alt="Company logo"
      className="h-12"
     />
@@ -38,9 +43,9 @@ function MainComponent() {
    </header>
    <main className="p-4">
     <div className="mb-8">
-     <div className="rounded-lg overflow-hidden border border-[#30363d] bg-[#161b22] h-[200px] w-full max-w-[768px] mx-auto flex justify-center items-center">
-      <div className="bg-[#21262d] h-[140px] w-[140px] rounded-full"></div>
-      <p className="text-sm">Generated response...</p>
+     <div className="rounded-lg overflow-hidden border border-[#30363d] bg-gradient-to-r from-[#161b22] via-[#2c2f33] to-[#161b22] h-[200px] w-full max-w-[768px] mx-auto flex justify-center items-center">
+      {/* <div className="bg-[#21262d] h-[140px] w-[140px] rounded-full"></div> */}
+      <p className="text-sm p-4">{generatedResponse ? generatedResponse : "Click Generate to see response..."}</p>
      </div>
     </div>
     <div className="mb-8">
@@ -52,7 +57,7 @@ function MainComponent() {
       value={inputPrompt}
       onChange={(e) => setInputPrompt(e.target.value)}
     />
-     <div className="w-full h-1 bg-[#21262d] rounded-full overflow-hidden mb-4">
+     <div className="w-full h-1 bg-[#21262d] rounded-full overflow-hidden mb-4 bg-gradient-to-r from-[#161b22] via-[#2c2f33] to-[#161b22]">
       <div className="bg-[#58a6ff] h-full rounded-full"></div>
      </div>
      <button
@@ -90,13 +95,16 @@ function MainComponent() {
     <div className="bg-[#161b22] p-4 rounded text-center">
      <div className="rounded-full overflow-hidden border border-[#30363d] inline-block">
       <img
-       src="images/creator-image.png"
+       src="https://avatars.githubusercontent.com/u/60035881?v=4"
        alt="Portrait of the app creator"
-       className="w-24 h-24 object-cover"
+       className="w-40 h-40 object-cover"
       />
      </div>
+     <p className="my-4 text-l font-bold">
+      Ish Kapoor
+     </p>
      <p className="my-4 text-sm">
-      A bit of text that describes the app creator...
+      I am the real Thala. PM at AM.
      </p>
      <div className="flex justify-center items-center space-x-4">
       <i className="fa fa-twitter text-[#58a6ff] hover:text-[#1f6feb]"></i>
